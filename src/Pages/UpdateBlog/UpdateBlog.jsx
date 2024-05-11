@@ -1,8 +1,8 @@
 import Swal from 'sweetalert2'
 
-const AddBlog = () => {
+const UpdateBlog = () => {
 
-    const handleAddBlog = e => {
+    const handleUpdateBlog = e => {
         e.preventDefault()
         const form = e.target
         const name = form.name.value
@@ -14,36 +14,36 @@ const AddBlog = () => {
 
         console.log(name, image, email, short_description, detailed_description, category);
 
-        const newBlog = {name, image, email, short_description, detailed_description, category}
+        const newBlog = { name, image, email, short_description, detailed_description, category }
 
-        fetch('http://localhost:5000/blog',{
-            method:'POST',
-            headers:{
-                'Content-type':'application/json'
+        fetch('http://localhost:5000/blog', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
             },
             body: JSON.stringify(newBlog)
         })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            if (data.insertedId) {
-                console.log();
-                Swal.fire({
-                    title: 'Success',
-                    text: 'You have successfully added an item',
-                    icon: 'success',
-                    confirmButtonText: 'Continue'
-                    })
-                form.reset()
-            }
-        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.insertedId) {
+                    console.log();
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'You have successfully added an item',
+                        icon: 'success',
+                        confirmButtonText: 'Continue'
+                        })
+                    form.reset()
+                }
+            })
 
     }
 
     return (
         <div>
             <section className="p-6 dark:bg-gray-100 dark:text-gray-900" style={{ backgroundImage: 'url(https://i.ibb.co/w7PyjsY/5357377-Internet-go.jpg)', backgroundPosition: 'center' }}>
-                <form onSubmit={handleAddBlog} className="container flex flex-col mx-auto space-y-12  mb-20">
+                <form onSubmit={handleUpdateBlog} className="container flex flex-col mx-auto space-y-12  mb-20">
                     <div className="grid grid-cols-2 gap-10 mt-20">
 
                         <div>
@@ -98,4 +98,4 @@ const AddBlog = () => {
     );
 };
 
-export default AddBlog;
+export default UpdateBlog;
