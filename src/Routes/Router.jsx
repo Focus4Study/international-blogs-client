@@ -6,6 +6,7 @@ import AllBlogs from "../Pages/AllBlogs/AllBlogs";
 import FeaturedBlogs from "../Pages/FeaturedBlogs/FeaturedBlogs";
 import Wishlist from "../Pages/Wishlist/Wishlist";
 import Login from "../Pages/Login/Login";
+import Register from "../Pages/Register/Register";
 
 
 
@@ -40,7 +41,7 @@ const router = createBrowserRouter([
         },
             {
             path: "/register",
-            element: <Wishlist></Wishlist>,
+            element: <Register></Register>,
         },
     ]
     },

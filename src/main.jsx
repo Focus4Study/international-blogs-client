@@ -7,6 +7,7 @@ import {
 import router from './Routes/Router.jsx';
 import 'rsuite/dist/rsuite-no-reset.min.css';
 import { CustomProvider } from 'rsuite';
+import AuthProvider from './context/AuthProvider.jsx';
 
 
 
@@ -16,8 +17,10 @@ import { CustomProvider } from 'rsuite';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <CustomProvider>
-      <RouterProvider router={router} />
-    </CustomProvider>
+    <AuthProvider>
+      <CustomProvider>
+        <RouterProvider router={router} />
+      </CustomProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )
