@@ -66,7 +66,7 @@ const Navbar = () => {
                                 </div>
                             </div>
                             :
-                            <div className="navbar-end flex">
+                            <div tabIndex={0} className="navbar-end flex">
                                 <button className=" rounded-md btn text-sm lg:text-lg text-black lg:font-bold  mr-3 border-0"><Link className={'p-3 lg:px-5 lg:py-3'} to={'/login'}>Login</Link></button>
                                 <button className="btn rounded-md text-sm lg:text-lg text-black lg:font-bold  mr-3 border-0"><Link className={'p-3 lg:px-5 lg:py-3'} to={'/register'}>Register</Link></button>
                             </div>
