@@ -14,17 +14,18 @@ const AddBlog = () => {
         e.preventDefault()
         const form = e.target
         const name = form.name.value
+        const title = form.title.value
         const image = form.image.value
         const email = form.email.value
         const short_description = form.short_description.value
         const detailed_description = form.detailed_description.value
         const category = form.category.value
 
-        console.log(name, image, email, short_description, detailed_description, category);
+        console.log(name, image, email, short_description, detailed_description, category, title);
 
-        const newBlog = { name, image, email, short_description, detailed_description, category}
+        const newBlog = { name, image, email, short_description, detailed_description, category, title}
 
-        fetch('http://localhost:5000/blog', {
+        fetch('http://localhost:5000/blogs', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
@@ -147,6 +148,7 @@ const AddBlog = () => {
                                 <option value={'Food'}>Food</option>
                                 <option value={'Lifestyle'}>Lifestyle</option>
                                 <option value={'Music'}>Music</option>
+                                <option value={'Music'}>Movies</option>
                                 <option value={'Sports'}>Sports</option>
                                 <option value={'Travel'}>Travel</option>
                                 <option value={'Tech'}>Tech</option>
