@@ -1,6 +1,25 @@
+import { useContext, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2'
+import { AuthContext } from '../../context/AuthProvider';
 
 const UpdateBlog = () => {
+
+    const { id } = useParams()
+    const { user } = useContext(AuthContext)
+    const userEmail = user?.email
+
+    const [blog, setBlog] = useState([])
+        fetch(`http://localhost:5000/blogs/${id}`, {
+        method: 'GET'
+    })
+        .then(res => res.json())
+        .then(data => {
+            setBlog(data);
+        })
+
+        const { name, title, image, email, short_description, detailed_description, category } = blog
+
 
     const handleUpdateBlog = e => {
         e.preventDefault()
@@ -15,10 +34,14 @@ const UpdateBlog = () => {
 
         console.log(name, title,  image, email, short_description, detailed_description, category);
 
-        const newBlog = { name, title, image, email, short_description, detailed_description, category }
+        const newBlog = { name, title, image, email, short_description, detailed_description, category, userEmail }
 
-        fetch('http://localhost:5000/blog', {
-            method: 'POST',
+        
+
+
+
+        fetch(`http://localhost:5000/blog/${id}`, {
+            method: 'PATCH',
             headers: {
                 'Content-type': 'application/json'
             },
@@ -27,11 +50,11 @@ const UpdateBlog = () => {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                if (data.insertedId) {
+                if (data.modifiedCount>0) {
                     console.log();
                     Swal.fire({
                         title: 'Success',
-                        text: 'You have successfully added an item',
+                        text: 'You have successfully updated an item',
                         icon: 'success',
                         confirmButtonText: 'Continue'
                         })
@@ -49,7 +72,11 @@ const UpdateBlog = () => {
 
                         <div>
                             <label htmlFor="image" className="text-xl font-bold mr-5">Image Url</label>
-                            <input name="image" id="image" type="text" placeholder="Image Url" className="input input-bordered w-full mt-3 focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" />
+                            <input name="image" 
+                            id="image" type="text" 
+                            placeholder="Image Url" 
+                            defaultValue={image}
+                            className="input input-bordered w-full mt-3 focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" />
                         </div>
 
 
@@ -61,6 +88,7 @@ const UpdateBlog = () => {
                             id="title" 
                             type="text" 
                             placeholder="Title" 
+                            defaultValue={title}
                             className="input input-bordered w-full mt-3 focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" />
                         </div>
 
@@ -71,6 +99,7 @@ const UpdateBlog = () => {
                             id="user_name" 
                             type="text" 
                             placeholder="User Name" 
+                            defaultValue={name}
                             className="input input-bordered w-full mt-3 focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" />
                         </div>
 
@@ -81,6 +110,7 @@ const UpdateBlog = () => {
                             id="user_email" 
                             type="email" 
                             placeholder="User Email" 
+                            defaultValue={email}
                             className="input input-bordered w-full mt-3 focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" />
                         </div>
 
@@ -95,6 +125,7 @@ const UpdateBlog = () => {
                             rows="10" 
                             type="text" 
                             placeholder="Short Description" 
+                            defaultValue={short_description}
                             className="input input-bordered mt-3 h-28 w-full  focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" ></textarea>
 
                         </div>
@@ -108,14 +139,32 @@ const UpdateBlog = () => {
                             rows="10" 
                             type="text" 
                             placeholder="Detailed Description" 
+                            defaultValue={detailed_description}
                             className="input input-bordered mt-3 w-full  h-28 focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" ></textarea>
                         </div>
 
                         <div>
                             <label htmlFor="Category" className="text-xl font-bold mr-5">Category</label>
-                            <select name="category" className="select select-bordered w-full mt-3">
-                                <option value={'Comedy'}>Comedy</option>
+                            <select name="category" defaultValue={category? category: 'DEFAULT'} required className="select select-bordered w-full mt-3">
+
+                                <option value={'DEFAULT'} disabled>Category</option>
                                 <option value={'Animals'}>Animals</option>
+                                <option value={'Anime'}>Anime</option>
+                                <option value={'Comedy'}>Comedy</option>
+                                <option value={'Cartoon'}>Cartoon</option>
+                                <option value={'Education'}>Education</option>
+                                <option value={'Entertainment'}>Entertainment</option>
+                                <option value={'Fitness'}>Fitness</option>
+                                <option value={'Fashion'}>Fashion</option>
+                                <option value={'Food'}>Food</option>
+                                <option value={'Lifestyle'}>Lifestyle</option>
+                                <option value={'Music'}>Music</option>
+                                <option value={'Music'}>Movies</option>
+                                <option value={'Sports'}>Sports</option>
+                                <option value={'Travel'}>Travel</option>
+                                <option value={'Tech'}>Tech</option>
+                                <option value={'Video Game'}>Video Game</option>
+
                             </select>
                         </div>
                     </div>

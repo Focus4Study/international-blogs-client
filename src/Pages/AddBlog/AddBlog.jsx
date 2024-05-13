@@ -6,7 +6,7 @@ const AddBlog = () => {
 
     const bgStyle = { backgroundImage: 'url(https://i.ibb.co/w7PyjsY/5357377-Internet-go.jpg)', backgroundPosition: 'center',}
     const { user } = useContext(AuthContext)
-
+    const userEmail = user?.email
    
     // console.log(user.email);
 
@@ -21,9 +21,9 @@ const AddBlog = () => {
         const detailed_description = form.detailed_description.value
         const category = form.category.value
 
-        console.log(name, image, email, short_description, detailed_description, category, title);
+        console.log(name, image, email, short_description, detailed_description, category, title, userEmail);
 
-        const newBlog = { name, image, email, short_description, detailed_description, category, title}
+        const newBlog = { name, image, email, short_description, detailed_description, category, title, userEmail}
 
         fetch('http://localhost:5000/blogs', {
             method: 'POST',

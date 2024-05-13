@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
+import { Link } from 'react-router-dom';
 
 
 const BlogCard = ({blog, handleDelete}) => {
 
-
     const { user } = useContext(AuthContext)
-    const {_id, image, short_description, category} = blog
+    const {_id,title, image, short_description, category} = blog
     
     return (
         <div>
@@ -18,12 +18,12 @@ const BlogCard = ({blog, handleDelete}) => {
                         <img className="rounded-lg h-52" src={image} alt="" />
                         <div className="p-2">
                             <div className="flex justify-between items-center">
-                                <h2>title</h2>
+                                <h2>{title}</h2>
                                 <h5>{category}</h5>
                             </div>
                             <p>{short_description}</p>
                             <div className="card-actions mt-10">
-                                <button className="btn btn-primary">Details</button>
+                                <Link to={`/blog-details/${_id}`}><button className="btn btn-primary">Details</button></Link>
                                 <button className="btn btn-primary">Wishlist</button>
                                 {
                                     
