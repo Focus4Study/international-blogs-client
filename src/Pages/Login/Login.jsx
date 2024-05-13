@@ -32,7 +32,13 @@ const Login = () => {
             form.reset()
         })
         .catch(
-            error => console.log(error)
+            error => Swal.fire({
+                title: 'Sorry something went wrong',
+                text: {error},
+                icon: 'error',
+                confirmButtonText: 'Close'
+            })
+
         )
 
     }
