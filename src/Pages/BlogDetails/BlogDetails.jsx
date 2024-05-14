@@ -1,21 +1,75 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { AuthContext } from "../../context/AuthProvider";
+import Swal from "sweetalert2";
+import { FaUserAlt } from "react-icons/fa";
 
 
 
 const BlogDetails = () => {
-
+    const { user } = useContext(AuthContext)
+    const loggedEmail = user?.email
+    const loggedUserImg = user?.userImg
     const { id } = useParams()
     const [blog, setBlog] = useState([])
-    const { _id, name, image, detailed_description, category, title } = blog
+    const [comment, setComment] = useState([])
+    const { _id, name, image, detailed_description, category, title, userEmail } = blog
+    const blogId = _id
 
-    fetch(`http://localhost:5000/blogs/${id}`, {
-        method: 'GET'
-    })
-        .then(res => res.json())
-        .then(data => {
-            setBlog(data);
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/blogs/${id}`, {
+            method: 'GET'
         })
+            .then(res => res.json())
+            .then(data => {
+                setBlog(data);
+            })
+            .catch(
+                error => console.log(error)
+            )
+    }, [id])
+
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/comments/${blogId}`, {
+            method: 'GET'
+        })
+            .then(res => res.json())
+            .then(data => {
+                setComment(data);
+            })
+    }, [blogId])
+
+
+    console.log(comment);
+
+    const handleComment = (e) => {
+        e.preventDefault()
+        const comment = e.target.comment.value
+        const newComment = { comment, blogId, name, loggedEmail, loggedUserImg }
+        fetch(`http://localhost:5000/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(newComment)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.insertedId) {
+                    console.log();
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'You have successfully added an item',
+                        icon: 'success',
+                        confirmButtonText: 'Continue'
+                    })
+                    e.target.reset()
+                }
+            })
+    }
 
     return (
 
@@ -38,11 +92,34 @@ const BlogDetails = () => {
                         <h3 className="text-white mt-4">Comment made by:</h3>
                         <p className="text-white mt-2 mb-4">This is a hardcoded comment</p>
                     </div>
+                    {
+                        comment.map(comment => <div className="flex gap-5 items-center" key={comment._id}>
+                            <div className="avatar">
+                                <div className="rounded-full">
+                                    {
+                                        comment?.loggedUserImg == '' ? <img className="w-24 " src={comment?.loggedUserImg} /> :<FaUserAlt  className="text-black text-4xl w-full mx-auto"/>
+
+                                            
+
+                                    }
+                                </div>
+                            </div>
+                            <div>
+                                <h3 className="text-white mt-4">{comment?.name || comment?.email}</h3>
+                                <p className="text-white mt-2 mb-4">{comment?.comment}</p>
+                            </div>
+                        </div>)
+                    }
                     <hr />
-                    <form action="">
-                        <textarea className="w-full rounded-lg p-5 mt-5" name="comments" placeholder="Make a comment on this blog" rows={5}></textarea>
-                        <input className="btn btn-primary mb-5" type="submit" value="Submit" />
-                    </form>
+                    {
+                        loggedEmail && loggedEmail !== userEmail ?
+                            <form onSubmit={handleComment} action="">
+                                <textarea className="w-full rounded-lg p-5 mt-5" name="comment" placeholder="Make a comment on this blog" rows={5}></textarea>
+                                <input className="btn btn-primary mb-5" type="submit" value="Submit" />
+                            </form>
+                            :
+                            <></>
+                    }
                 </div>
             </div>
         </div>

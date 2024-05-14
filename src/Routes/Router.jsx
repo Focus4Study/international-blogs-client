@@ -10,6 +10,7 @@ import Register from "../Pages/Register/Register";
 import UpdateBlog from "../Pages/UpdateBlog/UpdateBlog";
 import BlogDetails from "../Pages/BlogDetails/BlogDetails";
 import ErrorPage from "../Shared/ErrorPage";
+import PrivateRoute from "./PrivateRoute";
 
 
 
@@ -17,45 +18,47 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Main></Main>,
-        errorElement:<ErrorPage></ErrorPage>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
-            path: "/",
-            element: <Home></Home>,
-        },
+                path: "/",
+                element: <Home></Home>,
+            },
             {
-            path: "/add-blog",
-            element: <AddBlog></AddBlog>,
-        },
+                path: "/add-blog",
+                element: <AddBlog></AddBlog>,
+            },
             {
-            path: "/all-blogs",
-            element: <AllBlogs></AllBlogs>,
-        },
+                path: "/all-blogs",
+                element: <AllBlogs></AllBlogs>,
+            },
             {
-            path: "/featured-blogs",
-            element: <FeaturedBlogs></FeaturedBlogs>,
-        },
+                path: "/featured-blogs",
+                element: <FeaturedBlogs></FeaturedBlogs>,
+            },
             {
-            path: "/wishlist",
-            element: <Wishlist></Wishlist>,
-        },
+                path: "/wishlist",
+                element: <PrivateRoute><Wishlist></Wishlist></PrivateRoute>,
+            },
             {
-            path: "/login",
-            element: <Login></Login>,
-        },
+                path: "/login",
+                element: <Login></Login>,
+            },
             {
-            path: "/register",
-            element: <Register></Register>,
-        },
+                path: "/register",
+                element: <Register></Register>,
+            },
             {
-            path: "/blog-details/:id",
-            element: <BlogDetails></BlogDetails>,
-        },
+                path: "/blog-details/:id",
+                element:<BlogDetails></BlogDetails>,
+            },
             {
-            path: "/update-blog/:id",
-            element: <UpdateBlog></UpdateBlog>,
-        },
-    ]
+                path: "/update-blog/:id",
+                element: <PrivateRoute>
+                    <UpdateBlog></UpdateBlog>
+                </PrivateRoute>,
+            },
+        ]
     },
 ]);
 

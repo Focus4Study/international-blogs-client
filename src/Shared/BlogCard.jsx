@@ -11,7 +11,7 @@ const BlogCard = ({blog, handleDelete}) => {
     
     return (
         <div>
-            <div className="card bg-base-300 shadow-xl image-full md:w-96 lg:w-[400px] h-[600px]">
+            <div className="card bg-base-300 shadow-xl image-full md:w-96 lg:w-[400px] mb-10 md:h-[600px] mx-auto">
                 <figure><img className="w-full" src={image} alt="Shoes" /></figure>
                 <div className="card-body">
                     <div className="flex flex-col">
