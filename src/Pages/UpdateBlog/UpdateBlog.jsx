@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import { AuthContext } from '../../context/AuthProvider';
@@ -8,8 +8,10 @@ const UpdateBlog = () => {
     const { id } = useParams()
     const { user } = useContext(AuthContext)
     const userEmail = user?.email
-
+    const userImg = user?.photoURL
+    console.log(id);
     const [blog, setBlog] = useState([])
+    useEffect(()=>{
         fetch(`http://localhost:5000/blogs/${id}`, {
         method: 'GET'
     })
@@ -17,6 +19,10 @@ const UpdateBlog = () => {
         .then(data => {
             setBlog(data);
         })
+        .catch(
+            error => console.error(error)
+        )
+    },[setBlog,id])
 
         const { name, title, image, email, short_description, detailed_description, category } = blog
 
@@ -34,13 +40,13 @@ const UpdateBlog = () => {
 
         console.log(name, title,  image, email, short_description, detailed_description, category);
 
-        const newBlog = { name, title, image, email, short_description, detailed_description, category, userEmail }
+        const newBlog = { name, title, image, email, short_description, detailed_description, category, userEmail, userImg }
 
         
 
 
 
-        fetch(`http://localhost:5000/blog/${id}`, {
+        fetch(`http://localhost:5000/blogs/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-type': 'application/json'
@@ -61,6 +67,9 @@ const UpdateBlog = () => {
                     form.reset()
                 }
             })
+            .catch(
+                error => console.error(error)
+            )
 
     }
 

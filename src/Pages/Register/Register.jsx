@@ -1,36 +1,57 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import Swal from "sweetalert2";
-
+import { useForm } from "react-hook-form";
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 const Register = () => {
-    
-    const {createUser} = useContext(AuthContext);
-    
-    const handleRegister = e =>{
-        e.preventDefault();
-        const form = e.target
-        const name = form.name.value
-        const email = form.email.value
-        const password = form.password.value
-        console.log(name,email,password);
-        
-        createUser(email, password)
-        .then(result=>{
-            const user = result.user;
-            console.log(user);
-            Swal.fire({
-                title: 'Success',
-                text: 'You have successfully registered',
-                icon: 'success',
-                confirmButtonText: 'Continue'
-            })
-        })
-        .catch(
-            error => console.log(error)
-        )
+
+    const { createUser } = useContext(AuthContext);
+
+    const [passwordEye, setPasswordEye] = useState(false)
+    const showPassword = ()=>{
+        setPasswordEye(!passwordEye)
     }
-    
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm({
+        mode: 'onTouched'
+    });
+
+    const onSubmit = data => {
+        const { name } = data;
+        const { email } = data;
+        const { password } = data;
+        reset()
+
+        createUser(email, password, name)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                Swal.fire({
+                    title: 'Success',
+                    text: 'You have successfully registered',
+                    icon: 'success',
+                    confirmButtonText: 'Continue'
+                })
+            })
+            .catch(
+                error => {console.log(error),
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Sorry something went wrong',
+                    icon: 'error',
+                    confirmButtonText: 'Close'
+                })}
+
+            )
+    }
+
 
     return (
         <div>
@@ -39,24 +60,42 @@ const Register = () => {
                 <div className="hero-content text-center text-neutral-content">
                     <div className="py-10">
                         <div className="w-full p-4 rounded-md sm:p-8 dark:bg-gray-50 dark:text-gray-800">
-                        <h2 className="mb-3 text-3xl font-semibold text-center px-16">Register a new Account</h2>
-                        <br />
-                            <form noValidate="" onSubmit={handleRegister} action="" className="space-y-8">
+                            <h2 className="mb-3 text-3xl font-semibold text-center px-16">Register a new Account</h2>
+                            <br />
+                            <form noValidate="" onSubmit={handleSubmit(onSubmit)} action="" className="space-y-8">
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <label htmlFor="Name" className="block text-sm text-start">Name</label>
-                                        <input type="text" name="name" id="name" placeholder="Your Name Here" className="w-full px-3 py-2 text-black border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" />
+                                        <input type="text" name="name" id="name" placeholder="Your Name Here" className="w-full px-3 py-2 text-black border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" {...register("name", { required: true })} />
                                     </div>
                                     <div className="space-y-2">
                                         <label htmlFor="email" className="block text-sm text-start">Email address</label>
-                                        <input type="email" name="email" id="email" placeholder="Your@email.com" className="w-full text-black px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" />
+                                        <input type="email" name="email" id="email" placeholder="Your@email.com" className="w-full text-black px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" {...register("email", { required: true })} />
                                     </div>
                                     <div className="space-y-2">
                                         <div className="flex justify-between">
                                             <label htmlFor="password" className="text-sm">Password</label>
                                         </div>
-                                        <input type="password" name="password" id="password" placeholder="*****" className="w-full text-black px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" />
+                                        <input type={(!passwordEye)? 'password':'text'} name="password" id="password" placeholder="*****" className="w-full text-black px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                                            {...register("password", {
+                                                required: true,
+                                                pattern: {
+                                                    value:/^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).{6,}$/,
+                                                    message: 'Password must be at least 6 characters long and contain at least one uppercase letter, one special character, and one numeric digit.'
+                                                },
+                                                minLength: {
+                                                    value: 6,
+                                                    message: 'Password must be at least 6 characters long'
+                                                }
+                                            })} required />
+                                            {errors.password && <span className="text-red-600 font-bold">{errors.password.message}</span>}
                                     </div>
+                                    <div className="">
+                                {
+                                    (passwordEye ===false)?<IoEyeOff onClick={showPassword}/>:<IoEye onClick={showPassword} />
+                                }
+                                
+                            </div>
                                 </div>
                                 <input type="submit" className="w-full px-8 py-3 font-semibold rounded-md border-2 dark:bg-violet-600 dark:text-gray-50" value="Register" />
                             </form>
@@ -87,13 +126,13 @@ const Register = () => {
                                     <p>Register with Twitter</p>
                                 </button>
                             </div>
-                           
 
-                            
+
+
                             <p className="text-sm text-center dark:text-gray-600">Do not have account?
                                 <a href="#" rel="noopener noreferrer" className="focus:underline hover:underline">Sign up here</a>
                             </p>
-                            
+
                         </div>
                     </div>
                 </div>

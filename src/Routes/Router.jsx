@@ -9,6 +9,7 @@ import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import UpdateBlog from "../Pages/UpdateBlog/UpdateBlog";
 import BlogDetails from "../Pages/BlogDetails/BlogDetails";
+import ErrorPage from "../Shared/ErrorPage";
 
 
 
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Main></Main>,
+        errorElement:<ErrorPage></ErrorPage>,
         children: [
             {
             path: "/",

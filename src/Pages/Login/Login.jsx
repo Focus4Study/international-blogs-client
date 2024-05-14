@@ -1,7 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
+import { IoEye, IoEyeOff } from "react-icons/io5";
+import { useForm } from "react-hook-form";
 
 
 const Login = () => {
@@ -11,15 +13,28 @@ const Login = () => {
     const location = useLocation()
     const from = location?.state
 
-    const handleLogin = e =>{
-        e.preventDefault();
-        const form = e.target
-        const name = form.name.value
-        const email = form.email.value
-        const password = form.password.value
-        console.log(name,email,password);
+    const [passwordEye, setPasswordEye] = useState(false)
+    const showPassword = ()=>{
+        setPasswordEye(!passwordEye)
+    }
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm({
+        mode: 'onTouched'
+    });
+
+    const onSubmit = data => {
+        const { name } = data;
+        const { email } = data;
+        const { password } = data;
+        reset()
+
         
-        login(email, password)
+        login(name,email,password)
         .then(result=>{
             const user = result.user;
             console.log(user);
@@ -29,16 +44,16 @@ const Login = () => {
                 icon: 'success',
                 confirmButtonText: 'Continue'
             })
-            form.reset()
         })
         .catch(
-            error => Swal.fire({
-                title: 'Sorry something went wrong',
-                text: {error},
+            error => {console.log(error), 
+                Swal.fire({
+                title: 'Error',
+                text: 'Sorry something went wrong',
                 icon: 'error',
                 confirmButtonText: 'Close'
             })
-
+}
         )
 
     }
@@ -67,17 +82,33 @@ const Login = () => {
                         <div className="w-full p-4 rounded-md sm:p-8 dark:bg-gray-50 dark:text-gray-800">
                         <h2 className="mb-3 text-3xl font-semibold text-center px-16">Login to your account</h2>
                         <br />
-                            <form onSubmit={handleLogin} noValidate="" action="" className="space-y-8">
+                            <form onSubmit={handleSubmit(onSubmit)} noValidate="" action="" className="space-y-8">
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <label htmlFor="email" className="block text-black text-sm text-start">Email address</label>
-                                        <input type="email" name="email" id="email" placeholder="Your@email.com" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" />
+                                        <input type="email" name="email" id="email" placeholder="Your@email.com" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" {...register("email", { required: true })} />
                                     </div>
                                     <div className="space-y-2">
                                         <div className="flex justify-between">
                                             <label htmlFor="password" className="text-sm text-black">Password</label>
                                         </div>
-                                        <input type="password" name="password" id="password" placeholder="*****" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" />
+                                        <input type="password" name="password" id="password" placeholder="*****" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" {...register("password", {
+                                                required: true,
+                                                pattern: {
+                                                    value: /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).{6,}$/,
+                                                    message: 'Password must be at least 6 characters long and contain at least one uppercase letter, one special character, and one numeric digit.'
+                                                },
+                                                minLength: {
+                                                    value: 6,
+                                                    message: 'Password must be at least 6 characters long'
+                                                }
+                                            })} required />
+                                            {errors.password && <span className="text-red-600 font-bold">{errors.password.message}</span>}
+                                    </div>
+                                    <div className="">
+                                {
+                                    (passwordEye ===false)?<IoEyeOff onClick={showPassword}/>:<IoEye onClick={showPassword} />
+                                }
                                     </div>
                                 </div>
                                 <input type="submit" className="w-full px-8 py-3 font-semibold rounded-md border-2 dark:bg-violet-600 dark:text-gray-50" value="Sign in" />
