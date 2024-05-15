@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthProvider';
 import { Link } from 'react-router-dom';
 
 
-const BlogCard = ({blog, handleDelete, handleWishlist}) => {
 
-    const { user } = useContext(AuthContext)
-    const {_id,title, image, short_description, category} = blog
-    
+const WishlistCard = ({oneWish}) => {
+
+    const {_id,title, image, short_description, category} = oneWish
     return (
         <div>
             <div className="card bg-base-300 shadow-xl image-full md:w-96 lg:w-[400px] mb-10 md:h-[600px] mx-auto">
@@ -24,14 +21,8 @@ const BlogCard = ({blog, handleDelete, handleWishlist}) => {
                             <p>{short_description}</p>
                             <div className="card-actions mt-10">
                                 <Link to={`/blog-details/${_id}`}><button className="btn btn-primary">Details</button></Link>
-                                <button onClick={()=>{handleWishlist(_id)}} className="btn btn-primary">Wishlist</button>
-                                {
-                                    
-                                    user?.email===blog.email? 
-                                    <button onClick={()=>handleDelete(_id)} className="btn btn-primary">Delete</button>
-                                    :
-                                    <></>
-                                }
+                                <button className="btn btn-primary">Wishlist</button>
+                                <button className="btn btn-primary">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -41,10 +32,9 @@ const BlogCard = ({blog, handleDelete, handleWishlist}) => {
     );
 };
 
-BlogCard.propTypes = {
-    blog: PropTypes.object,
-    handleDelete: PropTypes.func,
-    handleWishlist: PropTypes.func,
+WishlistCard.propTypes = {
+    oneWish: PropTypes.object,
+ 
 };
 
-export default BlogCard;
+export default WishlistCard;

@@ -1,11 +1,13 @@
 import BlogCard from "../../Shared/BlogCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../context/AuthProvider";
 
 
 const AllBlogs = () => {
 
-
+    const { user } = useContext(AuthContext)
+    const wishEmail = user?.email
     const [blogs, setBlogs] = useState([])
     useEffect(() => {
         fetch('http://localhost:5000/blogs', {
@@ -14,7 +16,44 @@ const AllBlogs = () => {
             .then(res => res.json())
             .then(data => setBlogs(data))
     }, [])
-    console.log(blogs);
+
+
+    const [wish, setWish] = useState(null)
+    const handleWishlist = (id) => {
+         
+        (fetch(`http://localhost:5000/blogs/${id}`, {
+            method: 'GET'
+        })
+            .then(res => res.json())
+            .then(data => {
+                const updatedWish = {...data, wishReq: wishEmail}
+                setWish(updatedWish)
+            })
+    )}
+   useEffect(()=>{
+        if (wish !== null) {
+            fetch(`http://localhost:5000/wishlist`,{
+            method:'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(wish)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            if (data.insertedId) {
+                console.log();
+                Swal.fire({
+                    title: 'Success',
+                    text: 'You have successfully added an this blog to your wishlist',
+                    icon: 'success',
+                    confirmButtonText: 'Continue'
+                })
+            }
+        })
+        }
+   },[wish])
 
     const handleDelete = id => {
 
@@ -54,7 +93,7 @@ const AllBlogs = () => {
                 <div className="mx-auto ">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 md:gap-3 lg:gap-y-7 lg:gap-x-14">
                         {
-                            blogs.map(blog => <BlogCard key={blog._id} blog={blog} handleDelete={handleDelete}></BlogCard>)
+                            blogs.map(blog => <BlogCard key={blog._id} blog={blog} handleDelete={handleDelete} handleWishlist={handleWishlist}></BlogCard>)
                         }
                     </div>
                 </div>
