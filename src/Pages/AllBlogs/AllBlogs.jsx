@@ -20,40 +20,54 @@ const AllBlogs = () => {
 
     const [wish, setWish] = useState(null)
     const handleWishlist = (id) => {
-         
+
         (fetch(`http://localhost:5000/blogs/${id}`, {
             method: 'GET'
         })
             .then(res => res.json())
             .then(data => {
-                const updatedWish = {...data, wishReq: wishEmail}
+                const updatedWish = { ...data, wishReq: wishEmail }
                 setWish(updatedWish)
             })
-    )}
-   useEffect(()=>{
+        )
+    }
+    useEffect(() => {
         if (wish !== null) {
-            fetch(`http://localhost:5000/wishlist`,{
-            method:'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(wish)
+            fetch(`http://localhost:5000/wishlist`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(wish)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.insertedId) {
+                        console.log();
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'You have successfully added an this blog to your wishlist',
+                            icon: 'success',
+                            confirmButtonText: 'Continue'
+                        })
+                    }
+                })
+        }
+    }, [wish])
+
+    const handleSearch = (e)=>{
+        e.preventDefault()
+        const title = e.target.search.value.toLowerCase()
+        fetch(`http://localhost:5000/blogs/searched/${title}`,{
+            method:'GET'
         })
         .then(res => res.json())
         .then(data => {
             console.log(data);
-            if (data.insertedId) {
-                console.log();
-                Swal.fire({
-                    title: 'Success',
-                    text: 'You have successfully added an this blog to your wishlist',
-                    icon: 'success',
-                    confirmButtonText: 'Continue'
-                })
-            }
+           setBlogs(data)
         })
-        }
-   },[wish])
+    }
 
     const handleDelete = id => {
 
@@ -88,7 +102,11 @@ const AllBlogs = () => {
     return (
         <div>
             <div>
-                <h2 className="text-3xl font-extrabold text-center lg:mb-10">The number of items in display is {blogs.length}</h2>
+                <h2 className="text-3xl font-extrabold text-center lg:mb-10">Enjoy a Huge Collection <br /> of <br /> {blogs.length} Blog Posts</h2>
+                <form onSubmit={(e)=>handleSearch(e)} className="w-1/2 mx-auto md:mb-10 relative">
+                    <input className="input input-bordered w-full mt-3 focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" type="search" name="search" id="" />
+                    <input className="absolute top-3 right-0 px-7 btn bg-gray-900 text-white" type="submit" value="Search" />
+                </form>
 
                 <div className="mx-auto ">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 md:gap-3 lg:gap-y-7 lg:gap-x-14">

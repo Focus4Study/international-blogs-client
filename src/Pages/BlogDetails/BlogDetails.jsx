@@ -83,7 +83,12 @@ const BlogDetails = () => {
                     </div>
                     <p className="text-white">{detailed_description}</p>
                     <p className="lg:text-xl font-semibold text-white">Posted By: {name}</p>
-                    <Link to={`/update-blog/${_id}`}><button className="btn px-7 bg-white text-black lg:mb-10 lg:mt-10">Update</button></Link>
+                    {
+                        loggedEmail && loggedEmail === userEmail ?
+                        <Link to={`/update-blog/${_id}`}><button className="btn px-7 bg-white text-black lg:mb-10 lg:mt-10">Update</button></Link>
+                        :
+                        ''
+                    }
                 </div>
 
 
