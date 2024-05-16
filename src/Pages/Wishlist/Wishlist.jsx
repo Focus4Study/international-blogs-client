@@ -10,7 +10,7 @@ const Wishlist = () => {
     const [wish, setWish] = useState([])
     console.log(wish);
     useEffect(() => {
-        fetch(`http://localhost:5000/wishlist/${email}`, {
+        fetch(`https://y-eta-nine.vercel.app/wishlist/${email}`, {
             method: 'GET'
         })
             .then(res => res.json())
@@ -28,7 +28,7 @@ const Wishlist = () => {
         })
 
         if (confirm) {
-            fetch(`http://localhost:5000/wishlist/id/${id}`, {
+            fetch(`https://y-eta-nine.vercel.app/wishlist/id/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())

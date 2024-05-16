@@ -18,7 +18,7 @@ const BlogDetails = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:5000/blogs/${id}`, {
+        fetch(`https://y-eta-nine.vercel.app/blogs/${id}`, {
             method: 'GET'
         })
             .then(res => res.json())
@@ -32,7 +32,7 @@ const BlogDetails = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:5000/comments/${blogId}`, {
+        fetch(`https://y-eta-nine.vercel.app/comments/${blogId}`, {
             method: 'GET'
         })
             .then(res => res.json())
@@ -48,7 +48,7 @@ const BlogDetails = () => {
         e.preventDefault()
         const comment = e.target.comment.value
         const newComment = { comment, blogId, name, loggedEmail, loggedUserImg }
-        fetch(`http://localhost:5000/comments`, {
+        fetch(`https://y-eta-nine.vercel.app/comments`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'

@@ -8,7 +8,7 @@ const FeaturedBlogs = () => {
 
     const [blogs, setBlogs] = useState([])
     useEffect(() => {
-        fetch('http://localhost:5000/blogs/featured', {
+        fetch('https://y-eta-nine.vercel.app/blogs/featured', {
             method: 'GET'
         })
             .then(res => res.json())

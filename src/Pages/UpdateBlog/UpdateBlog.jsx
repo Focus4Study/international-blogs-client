@@ -14,7 +14,7 @@ const UpdateBlog = () => {
     console.log(id);
     const [blog, setBlog] = useState([])
     useEffect(()=>{
-        fetch(`http://localhost:5000/blogs/${id}`, {
+        fetch(`https://y-eta-nine.vercel.app/blogs/${id}`, {
         method: 'GET'
     })
         .then(res => res.json())
@@ -48,7 +48,7 @@ const UpdateBlog = () => {
 
 
 
-        fetch(`http://localhost:5000/blogs/${id}`, {
+        fetch(`https://y-eta-nine.vercel.app/blogs/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-type': 'application/json'

@@ -15,7 +15,7 @@ const Home = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:5000/blogs/dateSorted', {
+        fetch('https://y-eta-nine.vercel.app/blogs/dateSorted', {
             method: 'GET'
         })
             .then(res => res.json())
@@ -26,7 +26,7 @@ const Home = () => {
     const [wish, setWish] = useState(null)
     const handleWishlist = (id) => {
 
-        (fetch(`http://localhost:5000/blogs/${id}`, {
+        (fetch(`https://y-eta-nine.vercel.app/blogs/${id}`, {
             method: 'GET'
         })
             .then(res => res.json())
@@ -38,7 +38,7 @@ const Home = () => {
     }
     useEffect(() => {
         if (wish !== null) {
-            fetch(`http://localhost:5000/wishlist`, {
+            fetch(`https://y-eta-nine.vercel.app/wishlist`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -71,7 +71,7 @@ const Home = () => {
         })
 
         if (confirm) {
-            fetch(`http://localhost:5000/blogs/${id}`, {
+            fetch(`https://y-eta-nine.vercel.app/blogs/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())

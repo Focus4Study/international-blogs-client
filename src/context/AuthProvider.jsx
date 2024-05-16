@@ -57,7 +57,7 @@ const AuthProvider = ({children}) => {
           setLoading(false)
           if(currentUser){
             const loggedUser = {email: userEmail}
-            axios.post('http://localhost:5000/jwt',loggedUser, {withCredential: true})
+            axios.post('https://y-eta-nine.vercel.app/jwt',loggedUser, {withCredential: true})
             .then(res=>{
                 console.log(res.data);
             })

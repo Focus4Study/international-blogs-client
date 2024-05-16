@@ -27,7 +27,7 @@ const AddBlog = () => {
 
         const newBlog = { name, image, email, short_description, detailed_description, category, title, userEmail, userImg, time}
 
-        fetch('http://localhost:5000/blogs', {
+        fetch('https://y-eta-nine.vercel.app/blogs', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
