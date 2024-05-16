@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 
 
-const WishlistCard = ({oneWish}) => {
+const WishlistCard = ({oneWish, handleDelete}) => {
 
     const {_id,title, image, short_description, category} = oneWish
     return (
@@ -21,8 +21,7 @@ const WishlistCard = ({oneWish}) => {
                             <p>{short_description}</p>
                             <div className="card-actions mt-10">
                                 <Link to={`/blog-details/${_id}`}><button className="btn btn-primary">Details</button></Link>
-                                <button className="btn btn-primary">Wishlist</button>
-                                <button className="btn btn-primary">Delete</button>
+                                <button onClick={()=>handleDelete(_id)} className="btn btn-primary">Remove</button>
                             </div>
                         </div>
                     </div>
@@ -34,6 +33,7 @@ const WishlistCard = ({oneWish}) => {
 
 WishlistCard.propTypes = {
     oneWish: PropTypes.object,
+    handleDelete: PropTypes.func,
  
 };
 

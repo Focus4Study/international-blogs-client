@@ -9,6 +9,8 @@ const UpdateBlog = () => {
     const { user } = useContext(AuthContext)
     const userEmail = user?.email
     const userImg = user?.photoURL
+    const time = new Date()
+   
     console.log(id);
     const [blog, setBlog] = useState([])
     useEffect(()=>{
@@ -40,7 +42,7 @@ const UpdateBlog = () => {
 
         console.log(name, title,  image, email, short_description, detailed_description, category);
 
-        const newBlog = { name, title, image, email, short_description, detailed_description, category, userEmail, userImg }
+        const newBlog = { name, title, image, email, short_description, detailed_description, category, userEmail, userImg, time }
 
         
 
@@ -177,7 +179,7 @@ const UpdateBlog = () => {
                             </select>
                         </div>
                     </div>
-                    <input type="submit" className="btn text-white font-bold bg-[#D04848]" value="Submit" />
+                    <input type="submit" className="btn  bg-gray-900 text-white font-bold" value="Submit" />
                 </form>
             </section>
         </div>

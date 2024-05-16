@@ -8,6 +8,7 @@ const AddBlog = () => {
     const { user } = useContext(AuthContext)
     const userEmail = user?.email
     const userImg = user?.photoURL
+    const time = new Date()
    
     // console.log(user.email);
 
@@ -24,7 +25,7 @@ const AddBlog = () => {
 
         console.log(name, image, email, short_description, detailed_description, category, title, userEmail);
 
-        const newBlog = { name, image, email, short_description, detailed_description, category, title, userEmail, userImg}
+        const newBlog = { name, image, email, short_description, detailed_description, category, title, userEmail, userImg, time}
 
         fetch('http://localhost:5000/blogs', {
             method: 'POST',
@@ -158,7 +159,7 @@ const AddBlog = () => {
                             </select>
                         </div>
                     </div>
-                    <input type="submit" className="btn text-white w-2/4 mx-auto font-bold bg-[#D04848]" value="Submit" />
+                    <input type="submit" className="btn bg-gray-900 text-white w-2/4 mx-auto font-bold" value="Submit" />
                 </form>
                 </div>
             </section>

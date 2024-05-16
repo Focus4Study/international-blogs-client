@@ -47,7 +47,7 @@ const Navbar = () => {
                             }
                         </ul>
                     </div>
-                    <a className="btn btn-ghost text-xl">Blog Stream</a>
+                    <img className="h-10" src="https://i.ibb.co/dWTwJpJ/Blog-logo.png" alt="" /><a className="btn btn-ghost text-xl">Blog Stream</a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
@@ -59,16 +59,16 @@ const Navbar = () => {
                 <div className="navbar-end">
                     {
                         user ?
-                            <div>
-                                <button onClick={handleSignOut} className="btn bg-[#D04848] text-[#F7EEDD]">SignOut</button>
+                            <div className="navbar-end md:gap-4 gap-2 flex items-center">
+                                <button onClick={handleSignOut} className="rounded-sm h-6 px-2 text-xs md:btn bg-gray-900 text-white">SignOut</button>
                                 <div data-tip={user.displayName} className="tooltip tooltip-bottom w-11 ">
                                     <img className="rounded-full" src={user.photoURL} />
                                 </div>
                             </div>
                             :
                             <div tabIndex={0} className="navbar-end flex">
-                                <button className=" rounded-md btn text-sm lg:text-lg text-black lg:font-bold  mr-3 border-0"><Link className={'p-3 lg:px-5 lg:py-3'} to={'/login'}>Login</Link></button>
-                                <button className="btn rounded-md text-sm lg:text-lg text-black lg:font-bold  mr-3 border-0"><Link className={'p-3 lg:px-5 lg:py-3'} to={'/register'}>Register</Link></button>
+                                <Link className={'lg:px-5 lg:pr-2'} to={'/login'}><button className="text-xs p-1 md:p-3 md:px-5 rounded-md md:text-sm lg:text-lg  bg-gray-900 text-white lg:font-bold border-0">Login</button></Link>
+                                <Link className={'lg:px-5'} to={'/register'}><button className="text-xs p-1 md:p-3 md:px-5 rounded-md md:text-sm lg:text-lg bg-gray-900 text-white lg:font-bold border-0">Register</button></Link>
                             </div>
                     }
                 </div>

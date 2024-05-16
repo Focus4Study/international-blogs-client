@@ -83,8 +83,11 @@ const BlogDetails = () => {
                     </div>
                     <p className="text-white">{detailed_description}</p>
                     <p className="lg:text-xl font-semibold text-white">Posted By: {name}</p>
-                    <Link to={`/update-blog/${_id}`}><button className="btn btn-primary lg:mb-10 lg:mt-10">Update</button></Link>
+                    <Link to={`/update-blog/${_id}`}><button className="btn px-7 bg-white text-black lg:mb-10 lg:mt-10">Update</button></Link>
                 </div>
+
+
+
                 <div className="mx-auto container w-3/4">
                     <h2 className="lg:text-xl font-semibold text-white mb-5">Comments:</h2>
                     <hr />
